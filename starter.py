@@ -68,6 +68,17 @@ non_udacity_enrollment = remove_udacity(enrollments)
 non_udacity_engagement = remove_udacity(daily_engagement)
 non_udacity_submission = remove_udacity(project_submissions)
 
-print len(non_udacity_enrollment)
-print len(non_udacity_engagement)
-print len(non_udacity_submission)
+#print len(non_udacity_enrollment)
+#print len(non_udacity_engagement)
+#print len(non_udacity_submission)
+
+# Getting started with cleaning up data
+# Refining the Question
+
+paid_students = {}
+for e in non_udacity_enrollment:
+	if e['is_canceled'] == 'False' or e['days_to_cancel'] > '7':
+		account_key = e['account_key']
+		enrollment_date = e['join_date']
+		paid_students[account_key] = enrollment_date
+#print len(paid_students)
