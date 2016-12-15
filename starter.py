@@ -36,9 +36,38 @@ submission_unique = find_unique(project_submissions)
 submission_num_unique_students = len(submission_unique)
 
 # Students in enrollment but not in engagement
-#missing = enrollment_unique.difference(engagement_unique)
-#missing_key = missing.pop()
-#for e in enrollments:
-#	if e['account_key'] == missing_key:
-#		print e
-#		break
+missing = enrollment_unique.difference(engagement_unique)
+missing_key = missing.pop()
+for e in enrollments:
+	if e['account_key'] == missing_key:
+		#print e
+		break
+
+# Number of problem students
+num_problem_students = 0
+for e in enrollments:
+	key = e['account_key']
+	if key not in engagement_unique and e['join_date'] != e['cancel_date']:
+		num_problem_students += 1
+#print num_problem_students
+
+# Remove Udacity accounts
+udacity_keys = []
+for e in enrollments:
+	if e['is_udacity'] == 'True':
+		udacity_keys.append(e['account_key'])
+
+def remove_udacity(list):
+	non_udacity_data = []
+	for i in list:
+		if i['account_key'] not in udacity_keys:
+			non_udacity_data.append(i)
+	return non_udacity_data
+
+non_udacity_enrollment = remove_udacity(enrollments)
+non_udacity_engagement = remove_udacity(daily_engagement)
+non_udacity_submission = remove_udacity(project_submissions)
+
+print len(non_udacity_enrollment)
+print len(non_udacity_engagement)
+print len(non_udacity_submission)
